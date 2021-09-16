@@ -9,8 +9,6 @@ require Cwd;
 
 our @EXPORT = qw(find finddepth);
 
-
-use strict;
 my $Is_VMS = $^O eq 'VMS';
 my $Is_Win32 = $^O eq 'MSWin32';
 
