@@ -200,7 +200,7 @@ sub _find_opt {
 
 	if ($follow) {
 
-	    if (substr($top_item,0,1) eq '/') {
+	    if (_is_absolute($top_item)) {
 		$abs_dir = $top_item;
 	    }
 	    elsif ($top_item eq $File::Find::current_dir) {
