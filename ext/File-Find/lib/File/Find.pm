@@ -188,13 +188,13 @@ sub _find_opt {
 
 	($topdev,$topino,$topmode,$topnlink) = $follow ? stat $top_item : lstat $top_item;
 
-	if ($Is_Win32) {
-	    $top_item =~ s|[/\\]\z||
-	      unless $top_item =~ m{^(?:\w:)?[/\\]$};
-	}
-	else {
-	    $top_item =~ s|/\z|| unless $top_item eq '/';
-	}
+    if ($Is_Win32) {
+        $top_item =~ s|[/\\]|/|g;
+        $top_item =~ s|/\z|| unless $top_item =~ m|^(?:[A-Za-z]:)?/\z|;
+    }
+    else {
+        $top_item =~ s|/\z|| unless $top_item eq '/';
+    }
 
 	$Is_Dir= 0;
 
