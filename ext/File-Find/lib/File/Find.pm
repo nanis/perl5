@@ -123,6 +123,11 @@ sub is_tainted_pp {
     return length($@) != 0;
 }
 
+sub _is_absolute {
+    return $_[0] =~ m|^(?:[A-Za-z]:)?/| if $Is_Win32;
+    return substr($_[0], 0, 1) eq '/';
+}
+
 sub _find_opt {
     my $wanted = shift;
     return unless @_;
