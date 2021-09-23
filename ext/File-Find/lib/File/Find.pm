@@ -128,6 +128,11 @@ sub _is_absolute {
     return substr($_[0], 0, 1) eq '/';
 }
 
+sub _is_root {
+    return $_[0] =~ m|^(?:[A-Za-z]:)?/\z| if $Is_Win32;
+    return $_[0] eq '/';
+}
+
 sub _find_opt {
     my $wanted = shift;
     return unless @_;
@@ -188,13 +193,11 @@ sub _find_opt {
 
 	($topdev,$topino,$topmode,$topnlink) = $follow ? stat $top_item : lstat $top_item;
 
-    if ($Is_Win32) {
-        $top_item =~ s|[/\\]|/|g;
-        $top_item =~ s|/\z|| unless $top_item =~ m|^(?:[A-Za-z]:)?/\z|;
-    }
-    else {
-        $top_item =~ s|/\z|| unless $top_item eq '/';
-    }
+    # canonicalize directory separators
+    $top_item =~ s|[/\\]|/|g if $Is_Win32;
+
+    # no trailing / unless path is root
+    $top_item =~ s|/\z|| unless _is_root($top_item);
 
 	$Is_Dir= 0;
 
